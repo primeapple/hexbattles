@@ -1,1 +1,1 @@
-export { Hexagon } from './Hexagon';
+export {Hexagon} from './Hexagon';
