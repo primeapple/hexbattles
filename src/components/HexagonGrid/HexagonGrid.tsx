@@ -8,8 +8,8 @@ type HexagonGridProps = {
 };
 
 const calculateCenterPoint = (xIndex: number, yIndex: number, radius: number) => {
-	const inRadius = radius * (Math.sqrt(3) / 2);
-	const halfSideLength = inRadius / Math.sqrt(3);
+	const inRadius = Math.round(radius * (Math.sqrt(3) / 2));
+	const halfSideLength = Math.round(inRadius / Math.sqrt(3));
 	const rowIndent = yIndex % 2 === 0 ? 0 : inRadius;
 	return {
 		x: rowIndent + inRadius + (xIndex * (inRadius * 2)),
@@ -21,8 +21,8 @@ const calculateCenterPoint = (xIndex: number, yIndex: number, radius: number) =>
 export const HexagonGrid: Component<HexagonGridProps> = ({cells, radius}) => {
 	return (
 		<For each={cells}>{(row, yIndex) =>
-			<For each={row}>{(_cell, xIndex) =>
-				<Hexagon centerPoint={calculateCenterPoint(xIndex(), yIndex(), radius)} radius={radius} />
+			<For each={row}>{(cell, xIndex) =>
+				<Hexagon centerPoint={calculateCenterPoint(xIndex(), yIndex(), radius)} radius={radius} terrain={cell.terrain}/>
 			}</For>
 		}</For>
 	);

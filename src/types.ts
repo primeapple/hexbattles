@@ -3,7 +3,7 @@ export type Point = {
 	y: number;
 };
 
-export enum CellType {
+export enum Terrain {
 	Water = 'water',
 	Grass = 'grass',
 	Sand = 'sand',
@@ -19,7 +19,7 @@ export type Player = {
 export type Strength = 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9;
 
 export type Cell = {
-	type: CellType;
+	terrain: Terrain;
 	player?: Player;
 	strength?: Strength;
 };
