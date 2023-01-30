@@ -12,11 +12,13 @@ const sampleCells: Cell[][] = [
 ];
 
 const App: Component = () => (
-	<div>
-        My Hexbattles Game
-		<svg width='1000' height='500'>
+	<div class='flex flex-col justify-center'>
+		<header class='text-center'>
+			My Hexbattles Game
+		</header>
+		<div class='flex flex-row justify-center'>
 			<HexagonGrid cells={sampleCells} radius={50} />
-		</svg>
+		</div>
 	</div>
 );
 
