@@ -10,16 +10,16 @@ export enum Terrain {
 	Mountain = 'mountain',
 }
 
-export type Player = {
-	name: string;
-	color: string;
-	bot: boolean;
-};
+export type Player = string;
 
 export type Strength = 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9;
 
+export type Unit = {
+	player: Player;
+	strength: Strength;
+};
+
 export type Cell = {
 	terrain: Terrain;
-	player?: Player;
-	strength?: Strength;
+	unit?: Unit;
 };

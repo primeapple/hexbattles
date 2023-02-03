@@ -4,7 +4,7 @@ import {Terrain} from './types';
 import type {Cell} from './types';
 
 const sampleCells: Cell[][] = [
-	[{terrain: Terrain.Water}, {terrain: Terrain.Water}, {terrain: Terrain.Sand}, {terrain: Terrain.Grass}, {terrain: Terrain.Grass}, {terrain: Terrain.Sand}, {terrain: Terrain.Mountain}],
+	[{terrain: Terrain.Water}, {terrain: Terrain.Water}, {terrain: Terrain.Sand}, {terrain: Terrain.Grass, unit: {player: 'human', strength: 3}}, {terrain: Terrain.Grass}, {terrain: Terrain.Sand}, {terrain: Terrain.Mountain}],
 	[{terrain: Terrain.Water}, {terrain: Terrain.Water}, {terrain: Terrain.Grass}, {terrain: Terrain.Sand}, {terrain: Terrain.Sand}, {terrain: Terrain.Mountain}],
 	[{terrain: Terrain.Grass}, {terrain: Terrain.Grass}, {terrain: Terrain.Grass}, {terrain: Terrain.Grass}, {terrain: Terrain.Grass}, {terrain: Terrain.Grass}, {terrain: Terrain.Water}],
 	[{terrain: Terrain.Sand}, {terrain: Terrain.Sand}, {terrain: Terrain.Grass}, {terrain: Terrain.Grass}, {terrain: Terrain.Water}, {terrain: Terrain.Water}],

@@ -40,7 +40,7 @@ export const HexagonGrid: Component<HexagonGridProps> = ({cells, radius}) => {
 		<svg width={width} height={height}>
 			<For each={cells}>{(row, yIndex) =>
 				<For each={row}>{(cell, xIndex) =>
-					<Hexagon centerPoint={calculateCenterPoint(xIndex(), yIndex(), radius)} radius={radius} terrain={cell.terrain}/>
+					<Hexagon centerPoint={calculateCenterPoint(xIndex(), yIndex(), radius)} radius={radius} terrain={cell.terrain} unit={cell.unit} isSelected={false}/>
 				}</For>
 			}</For>
 		</svg>

@@ -15,3 +15,8 @@ code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
     monospace;
 }
+
+/* https://codepen.io/sosuke/pen/Pjoqqp */
+.filter-grey {
+	filter: invert(84%) sepia(9%) saturate(453%) hue-rotate(177deg) brightness(84%) contrast(95%);
+}

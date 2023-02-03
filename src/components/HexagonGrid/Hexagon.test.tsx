@@ -4,14 +4,14 @@ import {Terrain} from '../../types';
 
 describe('Hexagon', () => {
 	it.each([
-		[Terrain.Grass, 'fill-green-500'],
-		[Terrain.Water, 'fill-blue-500'],
-		[Terrain.Mountain, 'fill-gray-500'],
-		[Terrain.Sand, 'fill-yellow-500'],
+		[Terrain.Grass, 'fill-grass'],
+		[Terrain.Water, 'fill-water'],
+		[Terrain.Mountain, 'fill-mountain'],
+		[Terrain.Sand, 'fill-sand'],
 	])('should have the correct color', (terrain: Terrain, fillClass: string) => {
 		const {container, unmount} = render(() => (
 			<svg>
-				<Hexagon centerPoint={{x: 50, y: 50}} radius={20} terrain={terrain}/>
+				<Hexagon centerPoint={{x: 50, y: 50}} radius={20} terrain={terrain} isSelected={false}/>
 			</svg>
 		));
 		const hexagon = container.querySelector('polygon');
@@ -27,7 +27,7 @@ describe('Hexagon', () => {
 	])('should have the correct polygon points', (x: number, y: number, radius: number, points: string) => {
 		const {container, unmount} = render(() => (
 			<svg>
-				<Hexagon centerPoint={{x, y}} radius={radius} terrain={Terrain.Grass}/>
+				<Hexagon centerPoint={{x, y}} radius={radius} terrain={Terrain.Grass} isSelected={false}/>
 			</svg>
 		));
 		const hexagon = container.querySelector('polygon');
