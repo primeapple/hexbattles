@@ -1,10 +1,10 @@
-import { type Component, For } from 'solid-js';
-import type { Cell } from '../../types';
+import { type Component, For, createSignal } from 'solid-js';
+import type { Cell, Point } from '../../types';
 import { Hexagon } from './Hexagon';
 
-interface HexagonGridProps {
-  cells: Cell[][]
-  radius: number
+type HexagonGridProps = {
+    cells: Cell[][]
+    radius: number
 }
 
 const calculateInradius = (radius: number) => Math.round(radius * (Math.sqrt(3) / 2));
@@ -34,6 +34,7 @@ const calculateSvgHeight = (rowCount: number, radius: number) => {
 };
 
 export const HexagonGrid: Component<HexagonGridProps> = props => {
+    const [selectedCellPoint, setSelectedCellPoint] = createSignal<Point | null>(null);
     const width = () => calculateSvgWidth(props.cells[0].length, props.radius);
     const height = () => calculateSvgHeight(props.cells.length, props.radius);
     return (
@@ -45,7 +46,8 @@ export const HexagonGrid: Component<HexagonGridProps> = props => {
                         radius={props.radius}
                         terrain={cell.terrain}
                         unit={cell.unit}
-                        isSelected={false}
+                        isSelected={selectedCellPoint()?.x === xIndex() && selectedCellPoint()?.y === yIndex()}
+                        onclick={() => setSelectedCellPoint({ x: xIndex(), y: yIndex()})}
                     />
                 }</For>
             }</For>

@@ -3,11 +3,12 @@ import { type Component, Show } from 'solid-js';
 import { Terrain, type Point, type Unit } from '../../types';
 
 interface HexagonProps {
-  centerPoint: Point
-  radius: number
-  terrain: Terrain
-  isSelected: boolean
-  unit?: Unit
+    centerPoint: Point
+    radius: number
+    terrain: Terrain
+    isSelected: boolean
+    onclick: () => void
+    unit?: Unit
 }
 
 const terrainColorMap = {
@@ -42,10 +43,10 @@ export const Hexagon: Component<HexagonProps> = props => {
     const symbol = () => props.isSelected ? 'src/assets/sword.svg' : 'src/assets/shield.svg';
     const symbolUnfilled = () => props.isSelected ? 'src/assets/sword_unfilled.svg' : 'src/assets/shield_unfilled.svg';
     return (
-        <>
+        <g class={classNames({ 'cursor-pointer': true })} onclick={props.onclick}>
             <polygon
                 points={pointsString()}
-                class={classNames(terrainColor(), 'stroke-black', 'stroke-1')}
+                class={classNames(terrainColor(), 'stroke-black', props.isSelected ? 'stroke-2' : 'stroke-0')}
             />
             <Show when={props.unit}>
                 <image
@@ -53,7 +54,7 @@ export const Hexagon: Component<HexagonProps> = props => {
                     y={props.centerPoint.y - (props.radius / 2)}
                     width={props.radius}
                     height={props.radius}
-                    class={'filter-grey'}
+                    class="filter-grey"
                     href={symbol()}
                 />
                 <image
@@ -66,10 +67,10 @@ export const Hexagon: Component<HexagonProps> = props => {
                 <text
                     x={props.centerPoint.x - (props.radius / 10)}
                     y={props.centerPoint.y + (props.radius / 1.3)}
-                    class={'font-semibold'}>
+                    class="font-semibold">
                     {props.unit?.strength}
                 </text>
             </Show>
-        </>
+        </g>
     );
 };
