@@ -32,39 +32,42 @@ const calculateHexagonPoints = (center: Point, radius: number) => {
 
 const buildPolygonString = (points: Point[]) => points.map(point => `${point.x},${point.y}`).join(' ');
 
-export const Hexagon: Component<HexagonProps> = ({centerPoint, radius, terrain, unit, isSelected}) => {
-	const points = calculateHexagonPoints(centerPoint, radius);
-	const pointsString = buildPolygonString(points);
-	const terrainColor = terrainColorMap[terrain];
-	const symbol = () => isSelected ? 'src/assets/sword.svg' : 'src/assets/shield.svg';
-	const symbolUnfilled = () => isSelected ? 'src/assets/sword_unfilled.svg' : 'src/assets/shield_unfilled.svg';
+export const Hexagon: Component<HexagonProps> = props => {
+	const pointsString = () => {
+		const points = calculateHexagonPoints(props.centerPoint, props.radius);
+		return buildPolygonString(points);
+	};
+
+	const terrainColor = () => terrainColorMap[props.terrain];
+	const symbol = () => props.isSelected ? 'src/assets/sword.svg' : 'src/assets/shield.svg';
+	const symbolUnfilled = () => props.isSelected ? 'src/assets/sword_unfilled.svg' : 'src/assets/shield_unfilled.svg';
 	return (
 		<>
 			<polygon
-				points={pointsString}
-				class={classNames(terrainColor, 'stroke-black', 'stroke-1')}
+				points={pointsString()}
+				class={classNames(terrainColor(), 'stroke-black', 'stroke-1')}
 			/>
-			<Show when={unit}>
+			<Show when={props.unit}>
 				<image
-					x={centerPoint.x - (radius / 2)}
-					y={centerPoint.y - (radius / 2)}
-					width={radius}
-					height={radius}
+					x={props.centerPoint.x - (props.radius / 2)}
+					y={props.centerPoint.y - (props.radius / 2)}
+					width={props.radius}
+					height={props.radius}
 					class={'filter-grey'}
 					href={symbol()}
 				/>
 				<image
-					x={centerPoint.x - (radius / 2)}
-					y={centerPoint.y - (radius / 2)}
-					width={radius}
-					height={radius}
+					x={props.centerPoint.x - (props.radius / 2)}
+					y={props.centerPoint.y - (props.radius / 2)}
+					width={props.radius}
+					height={props.radius}
 					href={symbolUnfilled()}
 				/>
 				<text
-					x={centerPoint.x - (radius / 10)}
-					y={centerPoint.y + (radius / 1.3)}
+					x={props.centerPoint.x - (props.radius / 10)}
+					y={props.centerPoint.y + (props.radius / 1.3)}
 					class={'font-semibold'}>
-					{unit?.strength}
+					{props.unit?.strength}
 				</text>
 			</Show>
 		</>

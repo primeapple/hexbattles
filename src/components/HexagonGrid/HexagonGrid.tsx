@@ -33,14 +33,20 @@ const calculateSvgHeight = (rowCount: number, radius: number) => {
 	return (indentedRowCount * sideLength) + (unindentedRowCount * radius * 2);
 };
 
-export const HexagonGrid: Component<HexagonGridProps> = ({cells, radius}) => {
-	const width = calculateSvgWidth(cells[0].length, radius);
-	const height = calculateSvgHeight(cells.length, radius);
+export const HexagonGrid: Component<HexagonGridProps> = props => {
+	const width = () => calculateSvgWidth(props.cells[0].length, props.radius);
+	const height = () => calculateSvgHeight(props.cells.length, props.radius);
 	return (
-		<svg width={width} height={height}>
-			<For each={cells}>{(row, yIndex) =>
+		<svg width={width()} height={height()}>
+			<For each={props.cells}>{(row, yIndex) =>
 				<For each={row}>{(cell, xIndex) =>
-					<Hexagon centerPoint={calculateCenterPoint(xIndex(), yIndex(), radius)} radius={radius} terrain={cell.terrain} unit={cell.unit} isSelected={false}/>
+					<Hexagon
+						centerPoint={calculateCenterPoint(xIndex(), yIndex(), props.radius)}
+						radius={props.radius}
+						terrain={cell.terrain}
+						unit={cell.unit}
+						isSelected={false}
+					/>
 				}</For>
 			}</For>
 		</svg>
