@@ -1,25 +1,25 @@
-export type Point = {
-	x: number;
-	y: number;
-};
-
-export enum Terrain {
-	Water = 'water',
-	Grass = 'grass',
-	Sand = 'sand',
-	Mountain = 'mountain',
+export interface Point {
+  x: number
+  y: number
 }
 
-export type Player = string;
+export enum Terrain {
+  Water = 'water',
+  Grass = 'grass',
+  Sand = 'sand',
+  Mountain = 'mountain',
+}
 
-export type Strength = 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9;
+export type Player = string
 
-export type Unit = {
-	player: Player;
-	strength: Strength;
-};
+export type Strength = 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9
 
-export type Cell = {
-	terrain: Terrain;
-	unit?: Unit;
-};
+export interface Unit {
+  player: Player
+  strength: Strength
+}
+
+export interface Cell {
+  terrain: Terrain
+  unit?: Unit
+}

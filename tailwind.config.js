@@ -1,7 +1,8 @@
 /** @type {import('tailwindcss').Config} */
+// eslint-disable-next-line no-undef
 module.exports = {
     content: [
-        './src/**/*.{js,jsx,ts,tsx}',
+        './src/**/*.{js,jsx,ts,tsx}'
     ],
     theme: {
         extend: {
@@ -9,9 +10,9 @@ module.exports = {
                 grass: '#4c9f35',
                 water: '#3f78bd',
                 mountain: '#767674',
-                sand: '#e8ce79',
-            },
-        },
+                sand: '#e8ce79'
+            }
+        }
     },
-    plugins: [],
+    plugins: []
 };
