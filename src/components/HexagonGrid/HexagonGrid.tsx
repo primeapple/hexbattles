@@ -1,9 +1,8 @@
-import { type Component, For, createSignal } from 'solid-js';
-import type { Cell, Point } from '../../types';
+import { type Component, For, Show } from 'solid-js';
+import { useGameState } from '../../contexts';
 import { Hexagon } from './Hexagon';
 
 type HexagonGridProps = {
-    cells: Cell[][]
     radius: number
 }
 
@@ -34,23 +33,38 @@ const calculateSvgHeight = (rowCount: number, radius: number) => {
 };
 
 export const HexagonGrid: Component<HexagonGridProps> = props => {
-    const [selectedCellPoint, setSelectedCellPoint] = createSignal<Point | null>(null);
-    const width = () => calculateSvgWidth(props.cells[0].length, props.radius);
-    const height = () => calculateSvgHeight(props.cells.length, props.radius);
+    const [state, { setSelectedCellPoint, unsetSelectedCellPoint }] = useGameState();
+    const width = () => calculateSvgWidth(state.cells[0].length, props.radius);
+    const height = () => calculateSvgHeight(state.cells.length, props.radius);
     return (
         <svg width={width()} height={height()}>
-            <For each={props.cells}>{(row, yIndex) =>
+            <For each={state.cells}>{(row, yIndex) =>
                 <For each={row}>{(cell, xIndex) =>
-                    <Hexagon
-                        centerPoint={calculateCenterPoint(xIndex(), yIndex(), props.radius)}
-                        radius={props.radius}
-                        terrain={cell.terrain}
-                        unit={cell.unit}
-                        isSelected={selectedCellPoint()?.x === xIndex() && selectedCellPoint()?.y === yIndex()}
-                        onclick={() => setSelectedCellPoint({ x: xIndex(), y: yIndex()})}
-                    />
+                    <Show when={state.selectedCellPoint?.x !== xIndex() || state.selectedCellPoint?.y !== yIndex()}> 
+                        <Hexagon
+                            centerPoint={calculateCenterPoint(xIndex(), yIndex(), props.radius)}
+                            radius={props.radius}
+                            terrain={cell.terrain}
+                            unit={cell.unit}
+                            isSelected={false}
+                            onclick={() => setSelectedCellPoint({ x: xIndex(), y: yIndex()})}
+                        />
+                    </Show>
                 }</For>
             }</For>
+            <Show when={state.selectedCellPoint} keyed>
+                {(point) => {
+                    const cell = () => state.cells[point.y][point.x];
+                    return <Hexagon
+                        centerPoint={calculateCenterPoint(point.x, point.y, props.radius)}
+                        radius={props.radius}
+                        terrain={cell().terrain}
+                        unit={cell()?.unit}
+                        isSelected={true}
+                        onclick={() => unsetSelectedCellPoint()}
+                    />;
+                }}
+            </Show>
         </svg>
     );
 };

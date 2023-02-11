@@ -46,7 +46,7 @@ export const Hexagon: Component<HexagonProps> = props => {
         <g class={classNames({ 'cursor-pointer': true })} onclick={props.onclick}>
             <polygon
                 points={pointsString()}
-                class={classNames(terrainColor(), 'stroke-black', props.isSelected ? 'stroke-2' : 'stroke-0')}
+                class={classNames(terrainColor(), 'stroke-black', props.isSelected ? 'stroke-[3]' : 'stroke-0')}
             />
             <Show when={props.unit}>
                 <image

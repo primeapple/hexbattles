@@ -1,6 +1,7 @@
 import { render } from 'solid-testing-library';
 import { HexagonGrid } from './HexagonGrid';
 import { Terrain } from '../../types';
+import { GameStateProvider } from '../../contexts';
 
 describe('HexagonGrid', () => {
     const cells = [
@@ -14,7 +15,9 @@ describe('HexagonGrid', () => {
         [100, '522', '300']
     ])('should calculate the correct width and height for the svg', (radius, width, height) => {
         const { container, unmount } = render(() => (
-            <HexagonGrid cells={cells} radius={radius} />
+            <GameStateProvider cells={cells}>
+                <HexagonGrid radius={radius} />
+            </GameStateProvider>
         ));
         const hexagonGrid = container.firstChild;
         expect(hexagonGrid).toHaveAttribute('width', width);

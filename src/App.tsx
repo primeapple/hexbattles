@@ -2,6 +2,7 @@ import type { Component } from 'solid-js';
 import { HexagonGrid } from './components/HexagonGrid/HexagonGrid';
 import { Terrain } from './types';
 import type { Cell } from './types';
+import { GameStateProvider } from './contexts';
 
 const sampleCells: Cell[][] = [
     [{ terrain: Terrain.Water }, { terrain: Terrain.Water }, { terrain: Terrain.Sand }, { terrain: Terrain.Grass, unit: { player: 'human', strength: 3 } }, { terrain: Terrain.Grass }, { terrain: Terrain.Sand }, { terrain: Terrain.Mountain }],
@@ -17,7 +18,9 @@ const App: Component = () => (
 			My Hexbattles Game
         </header>
         <div class='flex flex-row justify-center'>
-            <HexagonGrid cells={sampleCells} radius={50} />
+            <GameStateProvider cells={sampleCells}>
+                <HexagonGrid radius={50} />
+            </GameStateProvider>
         </div>
     </div>
 );
