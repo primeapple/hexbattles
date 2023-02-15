@@ -20,3 +20,9 @@ code {
 .filter-grey {
 	filter: invert(84%) sepia(9%) saturate(453%) hue-rotate(177deg) brightness(84%) contrast(95%);
 }
+
+/* https://stackoverflow.com/a/70013225 */
+.clipped-hexagon {
+    clip-path: url(#selected-hexagon-clip-path);
+    paint-order: fill;
+}

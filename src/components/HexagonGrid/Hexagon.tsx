@@ -1,5 +1,5 @@
 import classNames from 'classnames';
-import { type Component, Show } from 'solid-js';
+import { type Component, Show, Match } from 'solid-js';
 import { Terrain, type Point, type Unit } from '../../types';
 
 interface HexagonProps {
@@ -44,9 +44,16 @@ export const Hexagon: Component<HexagonProps> = props => {
     const symbolUnfilled = () => props.isSelected ? 'src/assets/sword_unfilled.svg' : 'src/assets/shield_unfilled.svg';
     return (
         <g class={classNames({ 'cursor-pointer': true })} onclick={props.onclick}>
+            <Show when={props.isSelected}>
+                <defs>
+                    <clipPath id="selected-hexagon-clip-path">
+                        <polygon points={pointsString()} />
+                    </clipPath>
+                </defs>
+            </Show>
             <polygon
                 points={pointsString()}
-                class={classNames(terrainColor(), 'stroke-black', props.isSelected ? 'stroke-[3]' : 'stroke-0')}
+                class={classNames(terrainColor(), 'stroke-black', props.isSelected ? 'stroke-[6]' : 'stroke-0', {'clipped-hexagon': props.isSelected})}
             />
             <Show when={props.unit}>
                 <image
