@@ -1,14 +1,15 @@
 import classNames from 'classnames';
-import { type Component, Show, Match } from 'solid-js';
+import { type Component, Show } from 'solid-js';
 import { Terrain, type Point, type Unit } from '../../types';
 
 interface HexagonProps {
     centerPoint: Point
     radius: number
     terrain: Terrain
+    isAttackable: boolean
     isSelected: boolean
-    onclick: () => void
     unit?: Unit
+    onclick: () => void
 }
 
 const terrainColorMap = {
@@ -53,7 +54,7 @@ export const Hexagon: Component<HexagonProps> = props => {
             </Show>
             <polygon
                 points={pointsString()}
-                class={classNames(terrainColor(), 'stroke-black', props.isSelected ? 'stroke-[6]' : 'stroke-0', {'clipped-hexagon': props.isSelected})}
+                class={classNames(terrainColor(), 'stroke-black', props.isSelected ? 'stroke-[6]' : 'stroke-0', {'clipped-hexagon': props.isSelected, 'brightness-50': props.isAttackable })}
             />
             <Show when={props.unit}>
                 <image

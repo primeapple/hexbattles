@@ -11,7 +11,7 @@ describe('Hexagon', () => {
     ])('should have the correct color', (terrain: Terrain, fillClass: string) => {
         const { container, unmount } = render(() => (
             <svg>
-                <Hexagon centerPoint={{ x: 50, y: 50 }} radius={20} terrain={terrain} isSelected={false}/>
+                <Hexagon centerPoint={{ x: 50, y: 50 }} radius={20} terrain={terrain} isSelected={false} isAttackable={false} />
             </svg>
         ));
         const hexagon = container.querySelector('polygon');
@@ -27,11 +27,22 @@ describe('Hexagon', () => {
     ])('should have the correct polygon points', (x: number, y: number, radius: number, points: string) => {
         const { container, unmount } = render(() => (
             <svg>
-                <Hexagon centerPoint={{ x, y }} radius={radius} terrain={Terrain.Grass} isSelected={false}/>
+                <Hexagon centerPoint={{ x, y }} radius={radius} terrain={Terrain.Grass} isSelected={false} isAttackable={false} />
             </svg>
         ));
         const hexagon = container.querySelector('polygon');
         expect(hexagon).toHaveAttribute('points', points);
         unmount();
     });
+
+    it('should should be darker if `isAttackable` is true', () => {
+        const { container, unmount } = render(() => (
+            <svg>
+                <Hexagon centerPoint={{ x: 50, y: 50 }} radius={20} terrain={Terrain.Grass} isSelected={false} isAttackable={true} />
+            </svg>
+        ));
+        const hexagon = container.querySelector('polygon');
+        expect(hexagon).toHaveClass('brightness-50');
+    });
+
 });

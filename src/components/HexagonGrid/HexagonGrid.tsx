@@ -33,7 +33,7 @@ const calculateSvgHeight = (rowCount: number, radius: number) => {
 };
 
 export const HexagonGrid: Component<HexagonGridProps> = props => {
-    const [state, { setSelectedCellPoint, unsetSelectedCellPoint }] = useGameState();
+    const [state, { setSelectedCellPoint, unsetSelectedCellPoint, selectIsAttackable }] = useGameState();
     const width = () => calculateSvgWidth(state.cells[0].length, props.radius);
     const height = () => calculateSvgHeight(state.cells.length, props.radius);
 
@@ -53,7 +53,8 @@ export const HexagonGrid: Component<HexagonGridProps> = props => {
                         terrain={cell.terrain}
                         unit={cell.unit}
                         isSelected={isSelectedCell(xIndex(), yIndex())}
-                        onclick={handleOnclick(xIndex(), yIndex())}
+                        isAttackable={selectIsAttackable({ x: xIndex(), y: yIndex() })}
+                        onclick={cell.unit ? handleOnclick(xIndex(), yIndex()) : () => { return; }}
                     />
                 }</For>
             }</For>
