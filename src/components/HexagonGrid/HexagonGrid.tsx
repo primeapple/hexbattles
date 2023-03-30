@@ -1,5 +1,5 @@
 import { type Component, For } from 'solid-js';
-import { useGameState } from '../../contexts';
+import { useGameState } from '../../contexts/GameState';
 import { Hexagon } from './Hexagon';
 
 type HexagonGridProps = {

@@ -1,8 +1,8 @@
 import { JSX, createContext, useContext } from 'solid-js';
 import { createStore } from 'solid-js/store';
-import { Cell, Point, Terrain } from '../types';
+import { Cell, Point, Terrain } from '../../types';
 
-const isNeighbour = (p1: Point, p2: Point) => {
+export const isNeighbour = (p1: Point, p2: Point) => {
     // neighbour in row 
     if (p1.y === p2.y && Math.abs(p1.x - p2.x) === 1) return true;
 

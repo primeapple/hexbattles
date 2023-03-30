@@ -2,7 +2,7 @@ import type { Component } from 'solid-js';
 import { HexagonGrid } from './components/HexagonGrid/HexagonGrid';
 import { Terrain } from './types';
 import type { Cell } from './types';
-import { GameStateProvider } from './contexts';
+import { GameStateProvider } from './contexts/GameState';
 
 const sampleCells: Cell[][] = [
     [{ terrain: Terrain.Water }, { terrain: Terrain.Water }, { terrain: Terrain.Sand }, { terrain: Terrain.Grass, unit: { player: 'human', strength: 3 } }, { terrain: Terrain.Grass }, { terrain: Terrain.Sand }, { terrain: Terrain.Mountain }],
