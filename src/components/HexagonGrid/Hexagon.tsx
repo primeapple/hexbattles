@@ -8,6 +8,7 @@ interface HexagonProps {
     terrain: Terrain
     isAttackable: boolean
     isSelected: boolean
+    isDisabled: boolean
     unit?: Unit
     onclick: () => void
 }
@@ -43,8 +44,11 @@ export const Hexagon: Component<HexagonProps> = props => {
     const terrainColor = () => terrainColorMap[props.terrain];
     const symbol = () => props.isSelected ? 'src/assets/sword.svg' : 'src/assets/shield.svg';
     const symbolUnfilled = () => props.isSelected ? 'src/assets/sword_unfilled.svg' : 'src/assets/shield_unfilled.svg';
+
+    const handleOnclick = () => props.isDisabled ? () => {return;} : props.onclick();
+
     return (
-        <g class={classNames({ 'cursor-pointer': true })} onclick={props.onclick}>
+        <g class={classNames({ 'cursor-pointer': !props.isDisabled, 'disabled': props.isDisabled })} onclick={handleOnclick}>
             <Show when={props.isSelected}>
                 <defs>
                     <clipPath id="selected-hexagon-clip-path">

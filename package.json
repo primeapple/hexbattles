@@ -8,7 +8,7 @@
     "url": "https://github.com/primeapple/hexbattles"
   },
   "author": "Toni Müller",
-  "license": "MIT",
+  "license": "GPLv3",
   "scripts": {
     "start": "vite",
     "dev": "vite",

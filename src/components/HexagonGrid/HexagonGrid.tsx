@@ -1,4 +1,5 @@
 import { type Component, For } from 'solid-js';
+import { Cell } from '~/types';
 import { useGameState } from '../../contexts/GameState';
 import { Hexagon } from './Hexagon';
 
@@ -33,15 +34,34 @@ const calculateSvgHeight = (rowCount: number, radius: number) => {
 };
 
 export const HexagonGrid: Component<HexagonGridProps> = props => {
-    const [state, { setSelectedCellPoint, unsetSelectedCellPoint, selectIsAttackable }] = useGameState();
+    const [state, { getSelectedCell, setSelectedCellPoint, unsetSelectedCellPoint, selectIsAttackable, doAttack }] = useGameState();
     const width = () => calculateSvgWidth(state.cells[0].length, props.radius);
     const height = () => calculateSvgHeight(state.cells.length, props.radius);
 
     const isSelectedCell = (x: number, y: number) => 
         state.selectedCellPoint?.x === x && state.selectedCellPoint?.y === y;
 
-    const handleOnclick = (x: number, y: number) =>
-        () => isSelectedCell(x, y) ? unsetSelectedCellPoint() : setSelectedCellPoint({ x, y });
+    const isHexagonDisabled = (cell: Cell) => {
+        const selectedCell = getSelectedCell();
+        return cell.unit?.strength === 1
+            || cell.unit === selectedCell?.unit; 
+    };
+
+    const handleOnclick = (x: number, y: number) => {
+        const selectedCell = getSelectedCell();
+
+        if (!selectedCell){
+            setSelectedCellPoint({ x, y });
+            return;
+        }
+
+        if (isSelectedCell(x, y)) {
+            unsetSelectedCellPoint();
+            return;
+        }
+
+        doAttack({x, y});
+    };
 
     return (
         <svg width={width()} height={height()}>
@@ -54,7 +74,8 @@ export const HexagonGrid: Component<HexagonGridProps> = props => {
                         unit={cell.unit}
                         isSelected={isSelectedCell(xIndex(), yIndex())}
                         isAttackable={selectIsAttackable({ x: xIndex(), y: yIndex() })}
-                        onclick={cell.unit ? handleOnclick(xIndex(), yIndex()) : () => { return; }}
+                        isDisabled={isHexagonDisabled(cell)}
+                        onclick={() => handleOnclick(xIndex(), yIndex())}
                     />
                 }</For>
             }</For>

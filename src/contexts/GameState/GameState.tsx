@@ -1,6 +1,6 @@
 import { JSX, createContext, useContext } from 'solid-js';
-import { createStore } from 'solid-js/store';
-import { Cell, Point, Terrain } from '../../types';
+import { createStore, produce } from 'solid-js/store';
+import { Cell, Point, Strength, Terrain } from '../../types';
 
 export const isNeighbour = (p1: Point, p2: Point) => {
     // neighbour in row 
@@ -39,6 +39,8 @@ export const isNeighbour = (p1: Point, p2: Point) => {
 
     return false;
 };
+
+const diceRoll = () => Math.floor(Math.random() * 6) + 1;
     
 
 type GameStateStore = {
@@ -47,9 +49,11 @@ type GameStateStore = {
 }
 
 type GameStateContextType = [GameStateStore, {
+    getSelectedCell(): Cell | null;
     setSelectedCellPoint(point: Point): void;
     unsetSelectedCellPoint(): void;
     selectIsAttackable(point: Point): boolean;
+    doAttack(point: Point): void;
 }];
 
 type GameStateProviderProps = {
@@ -62,9 +66,11 @@ const contextDefaults = [
         cells: [[]] as Cell[][],
     },
     {
+        getSelectedCell() { return null; },
         setSelectedCellPoint() { return; },
         unsetSelectedCellPoint() { return; },
-        selectIsAttackable() { return false; }
+        selectIsAttackable() { return false; },
+        doAttack() { return; }
     }
 ] as GameStateContextType;
 
@@ -74,9 +80,14 @@ export function GameStateProvider(props: GameStateProviderProps) {
     const [state, setState] = createStore<GameStateStore>({
         cells: props.cells
     });
+
     const gameState: GameStateContextType = [
         state,
         {
+            getSelectedCell() {
+                if (!state.selectedCellPoint) return null;
+                return state.cells[state.selectedCellPoint.y][state.selectedCellPoint.x];
+            },
             setSelectedCellPoint(point: Point) {
                 setState('selectedCellPoint', point);
             },
@@ -85,11 +96,35 @@ export function GameStateProvider(props: GameStateProviderProps) {
             },
             selectIsAttackable(point: Point) {
                 if (!state.selectedCellPoint) return false;
+
                 const cell = state.cells[point.y][point.x];
                 if (cell.terrain === Terrain.Water) return false;
+
                 const selectedCell = state.cells[state.selectedCellPoint.y][state.selectedCellPoint.x];
                 if (selectedCell.unit === cell.unit) return false;
                 return isNeighbour(state.selectedCellPoint, point);
+            },
+            doAttack(attackedPoint: Point) {
+                const selectedCellPoint = state.selectedCellPoint;
+                if (!selectedCellPoint) return;
+
+                const selectedCell = state.cells[selectedCellPoint.y][selectedCellPoint.x];
+                if (!selectedCell.unit) return;
+
+                const attackedCell = state.cells[attackedPoint.y][attackedPoint.x];
+                if (!attackedCell.unit) {
+                    const newAttackedStrength = selectedCell.unit.strength - 1 as Strength;
+                    setState(
+                        produce((state) => {
+                            state.cells[selectedCellPoint.y][selectedCellPoint.x].unit!.strength = 1;
+                            state.cells[attackedPoint.y][attackedPoint.x].unit = { player: selectedCell.unit!.player, strength: newAttackedStrength };
+                        })
+                    );
+                    //  this should be done via `this.unsetSelectedCellPoint()`, how?
+                    setState('selectedCellPoint', undefined);
+                    return;
+                }
+                // TODO: attacking cells with enemy units within
             }
         }
     ];
