@@ -55,6 +55,10 @@ export const HexagonGrid: Component<HexagonGridProps> = (props) => {
             return;
         }
 
+        if (!selectIsAttackable({ x, y })) {
+            return;
+        }
+
         if (isSelectedCell(x, y)) {
             unsetSelectedCellPoint();
             return;
