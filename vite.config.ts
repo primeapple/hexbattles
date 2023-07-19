@@ -5,19 +5,19 @@ export default defineConfig({
     test: {
         environment: 'jsdom',
         transformMode: {
-            web: [/.[jt]sx?/]
+            web: [/.[jt]sx?/],
         },
         threads: false,
-        isolate: false
+        isolate: false,
     },
     plugins: [solidPlugin()],
     server: {
-        port: 3000
+        port: 3000,
     },
     build: {
-        target: 'esnext'
+        target: 'esnext',
     },
     resolve: {
-        conditions: ['development', 'browser']
-    }
+        conditions: ['development', 'browser'],
+    },
 });

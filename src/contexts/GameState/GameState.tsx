@@ -3,7 +3,7 @@ import { createStore, produce } from 'solid-js/store';
 import { Cell, Point, Strength, Terrain } from '../../types';
 
 export const isNeighbour = (p1: Point, p2: Point) => {
-    // neighbour in row 
+    // neighbour in row
     if (p1.y === p2.y && Math.abs(p1.x - p2.x) === 1) return true;
 
     // neighbour in column
@@ -41,44 +41,58 @@ export const isNeighbour = (p1: Point, p2: Point) => {
 };
 
 const diceRoll = () => Math.floor(Math.random() * 6) + 1;
-    
 
 type GameStateStore = {
-    cells: Cell[][],
-    selectedCellPoint?: Point,
-}
+    cells: Cell[][];
+    selectedCellPoint: Point | null;
+};
 
-type GameStateContextType = [GameStateStore, {
-    getSelectedCell(): Cell | null;
-    setSelectedCellPoint(point: Point): void;
-    unsetSelectedCellPoint(): void;
-    selectIsAttackable(point: Point): boolean;
-    doAttack(point: Point): void;
-}];
+type GameStateContextType = [
+    GameStateStore,
+    {
+        getSelectedCell(): Cell | null;
+        setSelectedCellPoint(point: Point): void;
+        unsetSelectedCellPoint(): void;
+        selectIsAttackable(point: Point): boolean;
+        doAttack(point: Point): void;
+    },
+];
 
 type GameStateProviderProps = {
-    children: JSX.Element,
-    cells: Cell[][],
-}
+    children: JSX.Element;
+    cells: Cell[][];
+};
 
 const contextDefaults = [
     {
         cells: [[]] as Cell[][],
+        selectedCellPoint: null,
     },
     {
-        getSelectedCell() { return null; },
-        setSelectedCellPoint() { return; },
-        unsetSelectedCellPoint() { return; },
-        selectIsAttackable() { return false; },
-        doAttack() { return; }
-    }
+        getSelectedCell() {
+            return null;
+        },
+        setSelectedCellPoint() {
+            return;
+        },
+        unsetSelectedCellPoint() {
+            return;
+        },
+        selectIsAttackable() {
+            return false;
+        },
+        doAttack() {
+            return;
+        },
+    },
 ] as GameStateContextType;
 
 const GameStateContext = createContext(contextDefaults);
 
 export function GameStateProvider(props: GameStateProviderProps) {
     const [state, setState] = createStore<GameStateStore>({
-        cells: props.cells
+        cells: props.cells,
+        selectedCellPoint: null,
     });
 
     const gameState: GameStateContextType = [
@@ -92,7 +106,7 @@ export function GameStateProvider(props: GameStateProviderProps) {
                 setState('selectedCellPoint', point);
             },
             unsetSelectedCellPoint() {
-                setState('selectedCellPoint', undefined);
+                setState('selectedCellPoint', null);
             },
             selectIsAttackable(point: Point) {
                 if (!state.selectedCellPoint) return false;
@@ -113,27 +127,28 @@ export function GameStateProvider(props: GameStateProviderProps) {
 
                 const attackedCell = state.cells[attackedPoint.y][attackedPoint.x];
                 if (!attackedCell.unit) {
-                    const newAttackedStrength = selectedCell.unit.strength - 1 as Strength;
+                    const newAttackedStrength = (selectedCell.unit.strength - 1) as Strength;
                     setState(
                         produce((state) => {
                             state.cells[selectedCellPoint.y][selectedCellPoint.x].unit!.strength = 1;
-                            state.cells[attackedPoint.y][attackedPoint.x].unit = { player: selectedCell.unit!.player, strength: newAttackedStrength };
-                        })
+                            state.cells[attackedPoint.y][attackedPoint.x].unit = {
+                                player: selectedCell.unit!.player,
+                                strength: newAttackedStrength,
+                            };
+                        }),
                     );
                     //  this should be done via `this.unsetSelectedCellPoint()`, how?
-                    setState('selectedCellPoint', undefined);
+                    setState('selectedCellPoint', null);
                     return;
                 }
                 // TODO: attacking cells with enemy units within
-            }
-        }
+            },
+        },
     ];
 
-    return (
-        <GameStateContext.Provider value={gameState}>
-            {props.children}
-        </GameStateContext.Provider>
-    );
+    return <GameStateContext.Provider value={gameState}>{props.children}</GameStateContext.Provider>;
 }
 
-export function useGameState() { return useContext(GameStateContext); }
+export function useGameState() {
+    return useContext(GameStateContext);
+}
