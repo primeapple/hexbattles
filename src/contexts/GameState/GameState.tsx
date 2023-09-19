@@ -115,29 +115,30 @@ export function GameStateProvider(props: GameStateProviderProps) {
                 if (cell.terrain === Terrain.Water) return false;
 
                 const selectedCell = state.cells[state.selectedCellPoint.y][state.selectedCellPoint.x];
-                if (selectedCell.unit === cell.unit) return false;
+                if (selectedCell.unit?.player === cell.unit?.player) return false;
                 return isNeighbour(state.selectedCellPoint, point);
             },
             doAttack(attackedPoint: Point) {
                 const selectedCellPoint = state.selectedCellPoint;
                 if (!selectedCellPoint) return;
 
-                const selectedCell = state.cells[selectedCellPoint.y][selectedCellPoint.x];
-                if (!selectedCell.unit) return;
+                const selectedCellUnit = state.cells[selectedCellPoint.y][selectedCellPoint.x].unit;
+                if (!selectedCellUnit) return;
 
                 const attackedCell = state.cells[attackedPoint.y][attackedPoint.x];
                 if (!attackedCell.unit) {
-                    const newAttackedStrength = (selectedCell.unit.strength - 1) as Strength;
                     setState(
                         produce((state) => {
-                            state.cells[selectedCellPoint.y][selectedCellPoint.x].unit!.strength = 1;
+                            state.cells[selectedCellPoint.y][selectedCellPoint.x].unit = {
+                                player: selectedCellUnit.player,
+                                strength: 1,
+                            };
                             state.cells[attackedPoint.y][attackedPoint.x].unit = {
-                                player: selectedCell.unit!.player,
-                                strength: newAttackedStrength,
+                                player: selectedCellUnit.player,
+                                strength: selectedCellUnit.strength - 1 as Strength,
                             };
                         }),
                     );
-                    //  this should be done via `this.unsetSelectedCellPoint()`, how?
                     setState('selectedCellPoint', null);
                     return;
                 }

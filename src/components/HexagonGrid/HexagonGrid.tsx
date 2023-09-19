@@ -1,5 +1,5 @@
 import { type Component, For } from 'solid-js';
-import { Cell } from '~/types';
+import { Cell, Terrain } from '../../types';
 import { useGameState } from '../../contexts/GameState';
 import { Hexagon } from './Hexagon';
 
@@ -44,7 +44,7 @@ export const HexagonGrid: Component<HexagonGridProps> = (props) => {
 
     const isHexagonDisabled = (cell: Cell) => {
         const selectedCell = getSelectedCell();
-        return cell.unit?.strength === 1 || cell.unit === selectedCell?.unit;
+        return cell.unit?.strength === 1 || cell.unit?.player === selectedCell?.unit?.player || cell.terrain === Terrain.Water;
     };
 
     const handleOnclick = (x: number, y: number) => {
@@ -69,6 +69,7 @@ export const HexagonGrid: Component<HexagonGridProps> = (props) => {
 
     return (
         <svg width={width()} height={height()}>
+            <title>Hexagon Grid</title>
             <For each={state.cells}>
                 {(row, yIndex) => (
                     <For each={row}>
