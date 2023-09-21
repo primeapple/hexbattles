@@ -3,6 +3,7 @@ import { HexagonGrid } from './components/HexagonGrid/HexagonGrid';
 import { Terrain } from './types';
 import type { Cell } from './types';
 import { GameStateProvider } from './contexts/GameState';
+import { FightResults } from './components/FightResults/FightResults';
 
 const sampleCells: Cell[][] = [
     [
@@ -17,7 +18,7 @@ const sampleCells: Cell[][] = [
     [
         { terrain: Terrain.Water },
         { terrain: Terrain.Water },
-        { terrain: Terrain.Grass },
+        { terrain: Terrain.Grass, unit: { player: 'bot', strength: 2} },
         { terrain: Terrain.Sand },
         { terrain: Terrain.Sand },
         { terrain: Terrain.Mountain },
@@ -56,6 +57,7 @@ const App: Component = () => (
         <div class='flex flex-row justify-center'>
             <GameStateProvider cells={sampleCells}>
                 <HexagonGrid radius={50} />
+                <FightResults />
             </GameStateProvider>
         </div>
     </div>

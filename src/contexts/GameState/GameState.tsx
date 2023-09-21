@@ -1,6 +1,6 @@
 import { JSX, createContext, useContext } from 'solid-js';
 import { createStore, produce } from 'solid-js/store';
-import { Cell, Point, Strength, Terrain } from '../../types';
+import { Cell, DiceRoll, FightOutcome, FightResult, Point, RoundResult, Strength, Terrain, TerrainEffectKeys, TerrainEffectsOnAttacker, Unit } from '../../types';
 
 export const isNeighbour = (p1: Point, p2: Point) => {
     // neighbour in row
@@ -40,17 +40,70 @@ export const isNeighbour = (p1: Point, p2: Point) => {
     return false;
 };
 
-const diceRoll = () => Math.floor(Math.random() * 6) + 1;
+export const diceRoll : () => DiceRoll = () => Math.floor(Math.random() * 6) + 1 as DiceRoll;
+
+export const simulateRound = (terrain: TerrainEffectKeys): RoundResult => {
+    const attackerRoll = diceRoll();
+    const defenderRoll = diceRoll();
+    const attackerModifier = TerrainEffectsOnAttacker[terrain];
+    const attackerRollWithModifier = attackerRoll + attackerModifier;
+
+    const outcome = (attackerRollWithModifier > defenderRoll)
+        ? FightOutcome.ATTACKER_WIN
+        : (attackerRollWithModifier < defenderRoll)
+        ? FightOutcome.DEFENDER_WIN
+        : FightOutcome.TIE;
+
+    return {
+        attackerRoll,
+        defenderRoll,
+        attackerModifier,
+        outcome,
+    };
+}
+
+export const simulateFight = (attacker: Unit, defender: Unit, terrain: TerrainEffectKeys): FightResult => {
+    let attackerStrength = attacker.strength as number;
+    let defenderStrength = defender.strength as number;
+    const roundResults: RoundResult[] = [];
+
+    while (attackerStrength > 1 && defenderStrength > 0) {
+        const roundResult = simulateRound(terrain);
+        switch (roundResult.outcome) {
+            case FightOutcome.ATTACKER_WIN:
+                defenderStrength--;
+                break;
+            case FightOutcome.DEFENDER_WIN:
+                attackerStrength--;
+                break;
+            case FightOutcome.TIE:
+                break;
+        }
+        roundResults.push(roundResult);
+    }
+
+    return {
+        attacker: attacker.player,
+        defender: defender.player,
+        roundResults,
+        outcome: defenderStrength === 0 ? FightOutcome.ATTACKER_WIN : FightOutcome.DEFENDER_WIN,
+    }
+}
 
 type GameStateStore = {
     cells: Cell[][];
     selectedCellPoint: Point | null;
+    lastFight: {
+        result: FightResult | null;
+        point : Point | null;
+    }
 };
 
 type GameStateContextType = [
     GameStateStore,
     {
         getSelectedCell(): Cell | null;
+        getLastFightResult(): FightResult | null;
         setSelectedCellPoint(point: Point): void;
         unsetSelectedCellPoint(): void;
         selectIsAttackable(point: Point): boolean;
@@ -67,9 +120,16 @@ const contextDefaults = [
     {
         cells: [[]] as Cell[][],
         selectedCellPoint: null,
+        lastFight: {
+            result: null,
+            point: null,
+        }
     },
     {
         getSelectedCell() {
+            return null;
+        },
+        getLastFightResult() {
             return null;
         },
         setSelectedCellPoint() {
@@ -93,6 +153,10 @@ export function GameStateProvider(props: GameStateProviderProps) {
     const [state, setState] = createStore<GameStateStore>({
         cells: props.cells,
         selectedCellPoint: null,
+        lastFight: {
+            result: null,
+            point: null,
+        }
     });
 
     const gameState: GameStateContextType = [
@@ -101,6 +165,9 @@ export function GameStateProvider(props: GameStateProviderProps) {
             getSelectedCell() {
                 if (!state.selectedCellPoint) return null;
                 return state.cells[state.selectedCellPoint.y][state.selectedCellPoint.x];
+            },
+            getLastFightResult() {
+                return state.lastFight.result;
             },
             setSelectedCellPoint(point: Point) {
                 setState('selectedCellPoint', point);
@@ -126,6 +193,8 @@ export function GameStateProvider(props: GameStateProviderProps) {
                 if (!selectedCellUnit) return;
 
                 const attackedCell = state.cells[attackedPoint.y][attackedPoint.x];
+                if (attackedCell.terrain === Terrain.Water) return;
+
                 if (!attackedCell.unit) {
                     setState(
                         produce((state) => {
@@ -142,7 +211,25 @@ export function GameStateProvider(props: GameStateProviderProps) {
                     setState('selectedCellPoint', null);
                     return;
                 }
-                // TODO: attacking cells with enemy units within
+
+                const fightResult = simulateFight(selectedCellUnit, attackedCell.unit, attackedCell.terrain);
+                setState(
+                    produce((state) => {
+                        state.cells[selectedCellPoint.y][selectedCellPoint.x].unit = {
+                            player: selectedCellUnit.player,
+                            strength: 1,
+                        };
+                        state.cells[attackedPoint.y][attackedPoint.x].unit = {
+                            player: selectedCellUnit.player,
+                            strength: selectedCellUnit.strength - 1 as Strength,
+                        };
+                        state.selectedCellPoint = null;
+                        state.lastFight = {
+                            result: fightResult,
+                            point: attackedPoint,
+                        };
+                    })
+                );
             },
         },
     ];

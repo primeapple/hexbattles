@@ -10,6 +10,14 @@ export enum Terrain {
     Mountain = 'mountain',
 }
 
+export const TerrainEffectsOnAttacker = {
+    [Terrain.Grass]: 0,
+    [Terrain.Sand]: 1,
+    [Terrain.Mountain]: -1
+} as const;
+export type TerrainEffectKeys = keyof typeof TerrainEffectsOnAttacker;
+export type TerrainEffectValues = typeof TerrainEffectsOnAttacker[TerrainEffectKeys];
+
 export type Player = string;
 
 export type Strength = 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9;
@@ -22,4 +30,26 @@ export type Unit = {
 export type Cell = {
     terrain: Terrain;
     unit?: Unit;
+};
+
+export type DiceRoll = 1 | 2 | 3 | 4 | 5 | 6;
+
+export enum FightOutcome {
+    ATTACKER_WIN = 'attacker',
+    DEFENDER_WIN = 'defender',
+    TIE = 'tie',
+}
+
+export type RoundResult = {
+    attackerRoll: DiceRoll;
+    defenderRoll: DiceRoll;
+    attackerModifier: TerrainEffectValues
+    outcome: FightOutcome;
+};
+
+export type FightResult = {
+    attacker: Player;
+    defender: Player;
+    roundResults: RoundResult[];
+    outcome: FightOutcome;
 };

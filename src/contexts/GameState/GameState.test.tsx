@@ -1,5 +1,5 @@
-import { Point } from '../../types';
-import { isNeighbour } from './GameState';
+import { Point, Terrain, TerrainEffectKeys, TerrainEffectValues } from '../../types';
+import { isNeighbour, simulateRound, simulateFight, diceRoll } from './GameState';
 
 describe('isNeighbour', () => {
     test('should return true if the points are on same y axis and x axis difference is 1', () => {
@@ -39,5 +39,15 @@ describe('isNeighbour', () => {
             expect(isNeighbour(p1, p2)).toBe(true);
             expect(isNeighbour(p2, p1)).toBe(true);
         });
+    });
+});
+
+describe('simulateRound', () => {
+    test.each([
+        [Terrain.Sand as TerrainEffectKeys, 1],
+        [Terrain.Grass as TerrainEffectKeys, 0],
+        [Terrain.Mountain as TerrainEffectKeys, -1],
+    ])('should return correct attacker modifier', (terrain: TerrainEffectKeys, modifier) => {
+        expect(simulateRound(terrain)).toHaveProperty('attackerModifier', modifier);
     });
 });
