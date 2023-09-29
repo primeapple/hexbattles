@@ -10,7 +10,7 @@ const sampleCells: Cell[][] = [
         { terrain: Terrain.Water },
         { terrain: Terrain.Water },
         { terrain: Terrain.Sand },
-        { terrain: Terrain.Grass, unit: { player: 'human', strength: 3 } },
+        { terrain: Terrain.Grass, unit: { player: 'human', strength: 8 } },
         { terrain: Terrain.Grass },
         { terrain: Terrain.Sand },
         { terrain: Terrain.Mountain },
@@ -18,7 +18,7 @@ const sampleCells: Cell[][] = [
     [
         { terrain: Terrain.Water },
         { terrain: Terrain.Water },
-        { terrain: Terrain.Grass, unit: { player: 'bot', strength: 2} },
+        { terrain: Terrain.Grass, unit: { player: 'bot', strength: 4 } },
         { terrain: Terrain.Sand },
         { terrain: Terrain.Sand },
         { terrain: Terrain.Mountain },

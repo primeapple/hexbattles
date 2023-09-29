@@ -47,9 +47,16 @@ export type RoundResult = {
     outcome: FightOutcome;
 };
 
+export type Losses = Strength | 0;
 export type FightResult = {
-    attacker: Player;
-    defender: Player;
+    attacker: {
+        player: Player,
+        losses: Losses
+    },
+    defender: {
+        player: Player,
+        losses: Losses
+    }
     roundResults: RoundResult[];
     outcome: FightOutcome;
 };
