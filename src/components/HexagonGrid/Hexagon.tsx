@@ -1,8 +1,8 @@
 import classNames from 'classnames';
 import { type Component, Show } from 'solid-js';
 import { Player, type Point, Terrain, type Unit } from '../../types';
-import swordUrl from '../../assets/sword_unfilled.svg';
-import unfilledSwordUrl from '../../assets/sword.svg';
+import swordUrl from '../../assets/sword.svg';
+import unfilledSwordUrl from '../../assets/sword_unfilled.svg';
 import shieldUrl from '../../assets/shield.svg';
 import unfilledShieldUrl from '../../assets/shield_unfilled.svg';
 
