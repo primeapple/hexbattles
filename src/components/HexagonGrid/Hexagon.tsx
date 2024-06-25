@@ -1,6 +1,6 @@
 import classNames from 'classnames';
 import { type Component, Show } from 'solid-js';
-import { Terrain, type Point, type Unit } from '../../types';
+import { type Point, Terrain, type Unit } from '../../types';
 
 interface HexagonProps {
     centerPoint: Point;
@@ -63,7 +63,7 @@ export const Hexagon: Component<HexagonProps> = (props) => {
         >
             <Show when={props.isSelected}>
                 <defs>
-                    <clipPath id='selected-hexagon-clip-path'>
+                    <clipPath id="selected-hexagon-clip-path">
                         <polygon points={pointsString()} />
                     </clipPath>
                 </defs>
@@ -81,7 +81,7 @@ export const Hexagon: Component<HexagonProps> = (props) => {
                     y={props.centerPoint.y - props.radius / 2}
                     width={props.radius}
                     height={props.radius}
-                    class='filter-grey'
+                    class="filter-grey"
                     href={symbol()}
                 />
                 <image
@@ -94,7 +94,7 @@ export const Hexagon: Component<HexagonProps> = (props) => {
                 <text
                     x={props.centerPoint.x - props.radius / 10}
                     y={props.centerPoint.y + props.radius / 1.3}
-                    class='font-semibold'
+                    class="font-semibold"
                 >
                     {props.unit?.strength}
                 </text>

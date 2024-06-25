@@ -1,18 +1,18 @@
-import { JSX, createContext, useContext } from 'solid-js';
+import { type JSX, createContext, useContext } from 'solid-js';
 import { createStore, produce } from 'solid-js/store';
 import {
-    Cell,
-    DiceRoll,
+    type Cell,
+    type DiceRoll,
     FightOutcome,
-    FightResult,
-    Losses,
-    Point,
-    RoundResult,
-    Strength,
+    type FightResult,
+    type Losses,
+    type Point,
+    type RoundResult,
+    type Strength,
     Terrain,
-    TerrainEffectKeys,
+    type TerrainEffectKeys,
     TerrainEffectsOnAttacker,
-    Unit,
+    type Unit,
 } from '../../types';
 
 export const isNeighbour = (p1: Point, p2: Point) => {
@@ -53,7 +53,7 @@ export const isNeighbour = (p1: Point, p2: Point) => {
     return false;
 };
 
-export const diceRoll : () => DiceRoll = () => Math.floor(Math.random() * 6) + 1 as DiceRoll;
+export const diceRoll: () => DiceRoll = () => (Math.floor(Math.random() * 6) + 1) as DiceRoll;
 
 export const simulateRound = (terrain: TerrainEffectKeys): RoundResult => {
     const attackerRoll = diceRoll();
@@ -65,8 +65,8 @@ export const simulateRound = (terrain: TerrainEffectKeys): RoundResult => {
         attackerRollWithModifier > defenderRoll
             ? FightOutcome.ATTACKER_WIN
             : attackerRollWithModifier < defenderRoll
-            ? FightOutcome.DEFENDER_WIN
-            : FightOutcome.TIE;
+              ? FightOutcome.DEFENDER_WIN
+              : FightOutcome.TIE;
 
     return {
         attackerRoll,

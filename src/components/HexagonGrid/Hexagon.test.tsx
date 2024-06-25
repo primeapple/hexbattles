@@ -1,6 +1,6 @@
 import { render } from 'solid-testing-library';
-import { Hexagon } from './Hexagon';
 import { Terrain } from '../../types';
+import { Hexagon } from './Hexagon';
 
 describe('Hexagon', () => {
     it.each([

@@ -1,7 +1,7 @@
 import { render } from 'solid-testing-library';
-import { HexagonGrid } from './HexagonGrid';
-import { Terrain } from '../../types';
 import { GameStateProvider } from '../../contexts/GameState';
+import { Terrain } from '../../types';
+import { HexagonGrid } from './HexagonGrid';
 
 describe('HexagonGrid', () => {
     const cells = [

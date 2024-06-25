@@ -1,9 +1,9 @@
 import type { Component } from 'solid-js';
+import { FightResults } from './components/FightResults/FightResults';
 import { HexagonGrid } from './components/HexagonGrid/HexagonGrid';
+import { GameStateProvider } from './contexts/GameState';
 import { Terrain } from './types';
 import type { Cell } from './types';
-import { GameStateProvider } from './contexts/GameState';
-import { FightResults } from './components/FightResults/FightResults';
 
 const sampleCells: Cell[][] = [
     [
@@ -52,9 +52,9 @@ const sampleCells: Cell[][] = [
 ];
 
 const App: Component = () => (
-    <div class='flex flex-col justify-center'>
-        <header class='text-center'>My Hexbattles Game</header>
-        <div class='flex flex-row justify-center'>
+    <div class="flex flex-col justify-center">
+        <header class="text-center">My Hexbattles Game</header>
+        <div class="flex flex-row justify-center">
             <GameStateProvider cells={sampleCells}>
                 <HexagonGrid radius={50} />
                 <FightResults />

@@ -1,6 +1,6 @@
 import { type Component, For } from 'solid-js';
-import { Cell, Terrain } from '../../types';
 import { useGameState } from '../../contexts/GameState';
+import { type Cell, Terrain } from '../../types';
 import { Hexagon } from './Hexagon';
 
 type HexagonGridProps = {
@@ -44,7 +44,11 @@ export const HexagonGrid: Component<HexagonGridProps> = (props) => {
 
     const isHexagonDisabled = (cell: Cell) => {
         const selectedCell = getSelectedCell();
-        return cell.unit?.strength === 1 || cell.unit?.player === selectedCell?.unit?.player || cell.terrain === Terrain.Water;
+        return (
+            cell.unit?.strength === 1 ||
+            cell.unit?.player === selectedCell?.unit?.player ||
+            cell.terrain === Terrain.Water
+        );
     };
 
     const handleOnclick = (x: number, y: number) => {

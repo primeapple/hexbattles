@@ -1,6 +1,6 @@
-import { type Component, Show, Switch, Match, For } from 'solid-js';
+import { type Component, For, Match, Show, Switch } from 'solid-js';
 import { useGameState } from '../../contexts/GameState';
-import { type RoundResult, FightOutcome } from '../../types';
+import { FightOutcome, type RoundResult } from '../../types';
 
 type RoundResultsProps = { result: RoundResult };
 
