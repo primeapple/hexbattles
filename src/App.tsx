@@ -52,12 +52,16 @@ const sampleCells: Cell[][] = [
 ];
 
 const App: Component = () => (
-    <div class="flex flex-col justify-center">
+    <div class="flex flex-col gap-y-12 justify-center">
         <header class="text-center">My Hexbattles Game</header>
-        <div class="flex flex-row justify-center">
+        <div class="flex flex-col gap-y-12">
             <GameStateProvider cells={sampleCells}>
-                <HexagonGrid radius={50} />
-                <FightResults />
+                <div class="flex justify-center">
+                    <HexagonGrid radius={50} />
+                </div>
+                <div class="flex justify-center">
+                    <FightResults />
+                </div>
             </GameStateProvider>
         </div>
     </div>
