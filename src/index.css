@@ -16,9 +16,15 @@ code {
     monospace;
 }
 
-/* https://codepen.io/sosuke/pen/Pjoqqp */
+/* For coloring svg images, see https://codepen.io/sosuke/pen/Pjoqqp */
 .filter-grey {
 	filter: invert(84%) sepia(9%) saturate(453%) hue-rotate(177deg) brightness(84%) contrast(95%);
+}
+.filter-red {
+    filter: invert(13%) sepia(79%) saturate(6151%) hue-rotate(358deg) brightness(103%) contrast(112%);
+}
+.filter-blue {
+    filter: invert(8%) sepia(99%) saturate(7440%) hue-rotate(249deg) brightness(102%) contrast(142%);
 }
 
 /* https://stackoverflow.com/a/70013225 */

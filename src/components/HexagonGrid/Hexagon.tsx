@@ -1,6 +1,6 @@
 import classNames from 'classnames';
 import { type Component, Show } from 'solid-js';
-import { type Point, Terrain, type Unit } from '../../types';
+import { Player, type Point, Terrain, type Unit } from '../../types';
 
 interface HexagonProps {
     centerPoint: Point;
@@ -18,6 +18,11 @@ const terrainColorMap = {
     [Terrain.Water]: 'fill-water',
     [Terrain.Mountain]: 'fill-mountain',
     [Terrain.Sand]: 'fill-sand',
+};
+
+const playerColorMap = {
+    [Player.Human]: 'filter-blue',
+    [Player.Bot]: 'filter-red',
 };
 
 const calculateHexagonPoints = (center: Point, radius: number) => {
@@ -42,6 +47,8 @@ export const Hexagon: Component<HexagonProps> = (props) => {
     };
 
     const terrainColor = () => terrainColorMap[props.terrain];
+    const unitColor = () => props.unit ? playerColorMap[props.unit.player] : undefined;
+
     const symbol = () => (props.isSelected ? 'src/assets/sword.svg' : 'src/assets/shield.svg');
     const symbolUnfilled = () =>
         props.isSelected ? 'src/assets/sword_unfilled.svg' : 'src/assets/shield_unfilled.svg';
@@ -81,7 +88,7 @@ export const Hexagon: Component<HexagonProps> = (props) => {
                     y={props.centerPoint.y - props.radius / 2}
                     width={props.radius}
                     height={props.radius}
-                    class="filter-grey"
+                    class={classNames(unitColor())}
                     href={symbol()}
                 />
                 <image

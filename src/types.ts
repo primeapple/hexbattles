@@ -18,7 +18,10 @@ export const TerrainEffectsOnAttacker = {
 export type TerrainEffectKeys = keyof typeof TerrainEffectsOnAttacker;
 export type TerrainEffectValues = (typeof TerrainEffectsOnAttacker)[TerrainEffectKeys];
 
-export type Player = string;
+export enum Player {
+    Human = 'human',
+    Bot = 'bot'
+}
 
 export type Strength = 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9;
 
