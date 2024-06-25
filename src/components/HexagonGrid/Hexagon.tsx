@@ -101,7 +101,7 @@ export const Hexagon: Component<HexagonProps> = (props) => {
                 <text
                     x={props.centerPoint.x - props.radius / 10}
                     y={props.centerPoint.y + props.radius / 1.3}
-                    class="font-semibold"
+                    class="font-semibold select-none"
                 >
                     {props.unit?.strength}
                 </text>
