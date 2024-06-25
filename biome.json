@@ -1,22 +1,24 @@
 {
-    "$schema": "https://docs.rome.tools/schemas/12.1.3/schema.json",
+    "$schema": "./node_modules/@biomejs/biome/configuration_schema.json",
     "organizeImports": {
-        "enabled": false
+        "enabled": true
     },
     "linter": {
         "enabled": true,
         "rules": {
-            "recommended": true
+            "all": true
         }
     },
     "vcs": {
+        "defaultBranch": "main",
         "enabled": true,
         "clientKind": "git",
         "useIgnoreFile": true
     },
     "formatter": {
         "enabled": true,
-        "indentSize": 4,
+        "formatWithErrors": true,
+        "indentWidth": 4,
         "indentStyle": "space",
         "lineWidth": 120
     },
