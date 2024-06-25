@@ -1,6 +1,10 @@
 import classNames from 'classnames';
 import { type Component, Show } from 'solid-js';
 import { Player, type Point, Terrain, type Unit } from '../../types';
+import swordUrl from '../../assets/sword_unfilled.svg';
+import unfilledSwordUrl from '../../assets/sword.svg';
+import shieldUrl from '../../assets/shield.svg';
+import unfilledShieldUrl from '../../assets/shield_unfilled.svg';
 
 interface HexagonProps {
     centerPoint: Point;
@@ -47,11 +51,10 @@ export const Hexagon: Component<HexagonProps> = (props) => {
     };
 
     const terrainColor = () => terrainColorMap[props.terrain];
-    const unitColor = () => props.unit ? playerColorMap[props.unit.player] : undefined;
+    const unitColor = () => (props.unit ? playerColorMap[props.unit.player] : undefined);
 
-    const symbol = () => (props.isSelected ? 'src/assets/sword.svg' : 'src/assets/shield.svg');
-    const symbolUnfilled = () =>
-        props.isSelected ? 'src/assets/sword_unfilled.svg' : 'src/assets/shield_unfilled.svg';
+    const symbol = () => (props.isSelected ? swordUrl : shieldUrl);
+    const symbolUnfilled = () => (props.isSelected ? unfilledSwordUrl : unfilledShieldUrl);
 
     const handleOnclick = () =>
         props.isDisabled
