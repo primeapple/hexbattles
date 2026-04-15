@@ -1,5 +1,5 @@
 import { render } from 'solid-testing-library';
-import { Terrain } from '../../types';
+import { Player, Terrain } from '../../types';
 import { Hexagon } from './Hexagon';
 
 describe('Hexagon', () => {
@@ -61,5 +61,25 @@ describe('Hexagon', () => {
         ));
         const hexagon = container.querySelector('polygon');
         expect(hexagon).toHaveClass('brightness-50');
+        unmount();
+    });
+
+    it.each([
+        [Player.Human, 'filter-blue'],
+        [Player.Bot, 'filter-red']
+    ])('should render the correct unit color', (player: Player, className: string) => {
+        const { container, unmount } = render(() => (
+            <svg>
+                <Hexagon
+                    centerPoint={{ x: 50, y: 50 }}
+                    radius={20}
+                    terrain={Terrain.Grass}
+                    isSelected={false}
+                    isAttackable={false}
+                    unit={{ player, strength: 1 }}
+                />
+            </svg>
+        ));
+        const hexagon = container.querySelector('polygon');
     });
 });

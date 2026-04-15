@@ -11,7 +11,7 @@
         "types": ["vite/client", "solid-start/env", "@testing-library/jest-dom"],
         "baseUrl": "./",
         "paths": {
-            "~/*": ["./src/*"]
+            "src/*": ["src/*"]
         }
     },
     "types": ["vitest"],
