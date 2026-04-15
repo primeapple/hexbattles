@@ -1,8 +1,10 @@
 import { defineConfig } from 'vite';
 import solidPlugin from 'vite-plugin-solid';
+import viteTsConfigPaths from 'vite-tsconfig-paths';
 
 export default defineConfig({
     test: {
+        globals: true,
         environment: 'jsdom',
         transformMode: {
             web: [/.[jt]sx?/],
@@ -10,7 +12,7 @@ export default defineConfig({
         threads: false,
         isolate: false,
     },
-    plugins: [solidPlugin()],
+    plugins: [solidPlugin(), viteTsConfigPaths()],
     server: {
         port: 3000,
     },
